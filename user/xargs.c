@@ -17,9 +17,9 @@ int main(int argc, char *argv[]){
         while(read(0, buff + j, sizeof(char)) != 0 && buff[j] != '\n'){
             j++;
         }
+        //j=0表示read()返回0，即输入已全部读取完毕，跳出循环，结束父进程
         if(j == 0)
             break;
-        //设置读取结束
         buff[j] = 0;
         //将父进程输出加入参数数组中
         argv_array[i] = buff;

@@ -3,7 +3,7 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 
-//format path
+//格式化路径path，ls.c中的fmtname()是包括./还有空格，这里需要在memset()函数中进行修改
 char *fmtname(char *path){
   static char buf[DIRSIZ+1];
   char *p;
@@ -22,9 +22,9 @@ char *fmtname(char *path){
 
 void find(char *path, char *filename){
     char buf[512], *p; //dir of file
-    int fd;            //file descriptor
-    struct dirent de;  //structure of the dir
-    struct stat st;    //structure of the file information
+    int fd;            //文件描述符
+    struct dirent de;  //目录结构信息
+    struct stat st;    //文件结构信息
 
     if((fd = open(path, 0)) < 0){
         fprintf(2, "find: cannot open %s\n", path);
@@ -37,6 +37,7 @@ void find(char *path, char *filename){
         return;
     }
 
+    //进行判断
     if( strcmp(filename, fmtname(path)) == 0){
         printf("%s\n", path);
     }
@@ -50,18 +51,20 @@ void find(char *path, char *filename){
             strcpy(buf, path);
             p = buf+strlen(buf);
             *p++ = '/';
-            //scan each file of the dir
+            //扫描目录下的每一个文件
             while(read(fd, &de, sizeof(de)) == sizeof(de)){
                 if(de.inum == 0)
                     continue;
+                //不递归至.以及..
                 if(strcmp(de.name, ".") == 0 || strcmp(de.name, "..") == 0)
                     continue;
-                memmove(p, de.name, DIRSIZ); //splice path
-                p[DIRSIZ] = 0;               //add string terminator
+                memmove(p, de.name, DIRSIZ); 
+                p[DIRSIZ] = 0;               
                 if(stat(buf, &st) < 0){
                     fprintf(2, "find: cannot stat %s\n", buf);
                     continue;
                 }
+                //递归调用find()
                 find(buf, filename);
             }
             break;
@@ -70,6 +73,7 @@ void find(char *path, char *filename){
 }
 
 int main(int argc, char *argv[]){
+    //先判断参数
     if(argc != 3){
         fprintf(2, "Usage: find <directory> <file>\n");
         exit(1);
