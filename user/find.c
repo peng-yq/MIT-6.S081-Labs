@@ -3,6 +3,7 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 
+//format path
 char *fmtname(char *path){
   static char buf[DIRSIZ+1];
   char *p;
@@ -41,32 +42,29 @@ void find(char *path, char *filename){
     }
 
     switch(st.type){
-    case T_FILE:
-        break;
-
-    case T_DIR:
-        if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
-            printf("find: path too long\n");
-            break;
-        }
-        strcpy(buf, path);
-        p = buf+strlen(buf);
-        *p++ = '/';
-        //scan each file of the dir
-        while(read(fd, &de, sizeof(de)) == sizeof(de)){
-            if(de.inum == 0)
-                continue;
-            if(strcmp(de.name, ".") == 0 || strcmp(de.name, "..") == 0)
-                continue;
-            memmove(p, de.name, DIRSIZ); //splice path
-            p[DIRSIZ] = 0;               //add string terminator
-            if(stat(buf, &st) < 0){
-                printf("find: cannot stat %s\n", buf);
-                continue;
+        case T_DIR:
+            if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
+                fprintf(2, "find: path too long\n");
+                break;
             }
-            find(buf, filename);
-        }
-        break;
+            strcpy(buf, path);
+            p = buf+strlen(buf);
+            *p++ = '/';
+            //scan each file of the dir
+            while(read(fd, &de, sizeof(de)) == sizeof(de)){
+                if(de.inum == 0)
+                    continue;
+                if(strcmp(de.name, ".") == 0 || strcmp(de.name, "..") == 0)
+                    continue;
+                memmove(p, de.name, DIRSIZ); //splice path
+                p[DIRSIZ] = 0;               //add string terminator
+                if(stat(buf, &st) < 0){
+                    fprintf(2, "find: cannot stat %s\n", buf);
+                    continue;
+                }
+                find(buf, filename);
+            }
+            break;
     }
     close(fd);
 }
