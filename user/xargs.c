@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     char buff[256];
     for( ; ;){
         int j = 0;
-        //一直接收输入，直到读完了或者出现换行符'\n'
+        //接收一行输入，直到读完了或者出现换行符'\n'
         while(read(0, buff + j, sizeof(char)) != 0 && buff[j] != '\n'){
             j++;
         }
