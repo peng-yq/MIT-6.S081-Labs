@@ -1,4 +1,5 @@
 // Saved registers for kernel context switches.
+// 为内核上下文切换保存的寄存器。
 struct context {
   uint64 ra;
   uint64 sp;
@@ -20,10 +21,10 @@ struct context {
 
 // Per-CPU state.
 struct cpu {
-  struct proc *proc;          // The process running on this cpu, or null.
-  struct context context;     // swtch() here to enter scheduler().
+  struct proc *proc;          // The process running on this cpu, or null. （运行在该CPU上的进程）
+  struct context context;     // swtch() here to enter scheduler(). （context结构体表示上下文切换保存状态的寄存器）
   int noff;                   // Depth of push_off() nesting.
-  int intena;                 // Were interrupts enabled before push_off()?
+  int intena;                 // Were interrupts enabled before push_off()? (在入栈之前是否启用了中断？)
 };
 
 extern struct cpu cpus[NCPU];
@@ -80,6 +81,7 @@ struct trapframe {
   /* 280 */ uint64 t6;
 };
 
+// 枚举进程的状态 （未使用，已使用，睡眠，可运行，运行，僵尸）
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
 // Per-process state
@@ -87,16 +89,17 @@ struct proc {
   struct spinlock lock;
 
   // p->lock must be held when using these:
-  enum procstate state;        // Process state
+  enum procstate state;        // Process state （进程的状态）
   void *chan;                  // If non-zero, sleeping on chan
   int killed;                  // If non-zero, have been killed
-  int xstate;                  // Exit status to be returned to parent's wait
-  int pid;                     // Process ID
+  int xstate;                  // Exit status to be returned to parent's wait （退出的状态）
+  int pid;                     // Process ID （进程ID）
 
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 
-  // these are private to the process, so p->lock need not be held.
+  // these are private to the process, so p->lock need not be held.\
+  这些是进程私有的，因此不需要持有 p->lock。
   uint64 kstack;               // Virtual address of kernel stack
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table

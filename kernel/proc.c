@@ -75,12 +75,17 @@ mycpu(void) {
   return c;
 }
 
-// Return the current struct proc *, or zero if none.
+// Return the current struct proc *, or zero if none.\
+返回当前的进程结构体，如果没有则返回0
 struct proc*
 myproc(void) {
+  // 入栈
   push_off();
+  // 获取运行的CPU
   struct cpu *c = mycpu();
+  // 将进程信息写入CPU中
   struct proc *p = c->proc;
+  // 出栈
   pop_off();
   return p;
 }

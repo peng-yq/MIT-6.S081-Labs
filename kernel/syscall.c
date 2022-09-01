@@ -133,6 +133,7 @@ void
 syscall(void)
 {
   int num;
+  // 获取当前运行的进程
   struct proc *p = myproc();
 
   num = p->trapframe->a7;

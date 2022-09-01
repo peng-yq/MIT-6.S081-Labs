@@ -95,7 +95,7 @@ vprintf(int fd, const char *fmt, va_list ap)
 }
 
 void
-fprintf(int fd, const char *fmt, ...)
+fprintf(int fd, const char *fmt, ...) // 无法列出传递函数的所有实参的类型和数目时,可以用省略号指定参数表（可变参数）
 {
   va_list ap;
 

@@ -9,7 +9,7 @@ strcpy(char *s, const char *t)
   char *os;
 
   os = s;
-  while((*s++ = *t++) != 0)
+  while((*s++ = *t++) != 0) // 很有名的代码:https://www.zhihu.com/question/49396421/answer/115814377
     ;
   return os;
 }
@@ -59,27 +59,29 @@ gets(char *buf, int max)
   char c;
 
   for(i=0; i+1 < max; ){
-    cc = read(0, &c, 1);
-    if(cc < 1)
+    cc = read(0, &c, 1);  // 返回读取的数目（字节？），读完就返回0
+    if(cc < 1) // 读取完毕，结束循环
       break;
     buf[i++] = c;
-    if(c == '\n' || c == '\r')
+    if(c == '\n' || c == '\r') // 换行或者回车（前者是光标下移一格，后者是光标移到行首，一般按enter是两者一起）\
+    结束循环
       break;
   }
-  buf[i] = '\0';
+  buf[i] = '\0'; // 设置结束符
   return buf;
 }
 
+//
 int
 stat(const char *n, struct stat *st)
 {
   int fd;
   int r;
 
-  fd = open(n, O_RDONLY);
+  fd = open(n, O_RDONLY); //n为打开的文件名，以只读权限打开
   if(fd < 0)
     return -1;
-  r = fstat(fd, st);
+  r = fstat(fd, st); 
   close(fd);
   return r;
 }
