@@ -3,7 +3,6 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
-int trace();
 
 int main(int argc, char *argv[]){
   int i;

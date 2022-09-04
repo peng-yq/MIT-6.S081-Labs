@@ -98,8 +98,7 @@ struct proc {
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 
-  // these are private to the process, so p->lock need not be held.\
-  这些是进程私有的，因此不需要持有 p->lock。
+  // these are private to the process, so p->lock need not be held.这些是进程私有的，因此不需要持有 p->lock。
   uint64 kstack;               // Virtual address of kernel stack
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table
@@ -108,4 +107,7 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  // trace_mask
+  int trace_mask;
 };

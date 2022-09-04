@@ -23,6 +23,7 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int trace(int);
 
 // ulib.c 一些函数库
 int stat(const char*, struct stat*);     // 将有关打开文件的信息放入 *st
@@ -39,5 +40,4 @@ void* malloc(uint);                      // 分配n字节的内存
 void free(void*);                        // 释放内存
 int atoi(const char*);                   // 将字符串数字转换为整形数字
 int memcmp(const void *, const void *, uint); // 比较字符串的，比较内存前N个字节
-void *memcpy(void *, const void *, uint);  // 从源src所指的内存地址的起始位置开始拷贝n个字节到目标dest所指的内存地址的起始位置中\
-这里直接调用的memmove()
+void *memcpy(void *, const void *, uint);  // 从源src所指的内存地址的起始位置开始拷贝n个字节到目标dest所指的内存地址的起始位置中,这里直接调用的memmove()
