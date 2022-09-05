@@ -3,7 +3,10 @@
         "param.h": "c",
         "cstdarg": "c",
         "iostream": "cpp",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "*.tcc": "c",
+        "istream": "c",
+        "ostream": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

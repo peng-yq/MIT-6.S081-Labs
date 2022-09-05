@@ -1,5 +1,6 @@
 struct stat;    // 文件的结构体
 struct rtcdate; // 时间的结构体
+struct sysinfo;
 
 // system calls 系统调用函数（手册第11页包含部分介绍）
 int fork(void);
@@ -24,6 +25,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int trace(int);
+int sysinfo(struct sysinfo *);
 
 // ulib.c 一些函数库
 int stat(const char*, struct stat*);     // 将有关打开文件的信息放入 *st
